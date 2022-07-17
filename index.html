@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!--Name: Tyler Browning
+        Filename: Index.HTML for Javascript Password generator
+        Class Section: CSC227
+        -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width-device-width, initial-scale.0">
+    </head>
+        <body>
+            <div id="random-password">
+                
+                <div id="settings">
+                <label for="length">Length</label>
+                <input type="number" id="length" value="" min="8" max="64"/>
+                <br>  
+                <label for="numbers">Password Includes Numbers</label>
+                <input type="checkbox" id="numbers" checked />
+                <br>
+                <label for="symbols">Password Includes Symbols</label>
+                <input type="checkbox" id="symbols" checked />
+                </div>
+                <button id="generate">Generate Password</button>
+                <br><br>
+                <input type="text" id="password" /> <button id="copy">Copy Password!</button>
+                <style>
+                    html, body {
+                        height: 100%;
+                    }
+                    #random-password{
+                        position: fixed;
+                        top: 25%;
+                        left: 40%;
+                    }
+                    Body {
+                        margin: 0;
+                        background-image: url("indexbackground.jpg");
+                        background-size: cover;
+                        background-repeat: no-repeat;
+                        background-position: center center;
+                        background-blend-mode: color;
+                    }
+
+                </style>
+                <script>
+
+                    // Creating Strings of the alphabet, numbers and symbols to create a password with
+
+                    const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+                    const numbers = "0123456789";
+                    const symbols = "!@#$%^&*_-+=";
+
+                    // Pulling the HTML elements createed for the generate password function
+
+                    const passwordTxt = document.getElementById("password");
+                    const length = document.getElementById("length");
+                    const incNumbers = document.getElementById("numbers");
+                    const incSymbols = document.getElementById("symbols");
+                    const generated = document.getElementById("generate");
+
+                    // Creating an event listener that when clicked, cheks to see if Numbers and symbols have been selected and sends the characters to be used
+                    // and the desired length to the generatepassword function. 
+
+                    generated.addEventListener("click", () => {
+                    let characters = alphabet;
+                    incNumbers.checked ? (characters += numbers) : "";
+                    incSymbols.checked ? (characters += symbols) : "";
+                    passwordTxt.value = generatePassword(length.value, characters);
+                    });
+
+                    // Creating a function to generate a password dependent on the length.
+
+                    function generatePassword(length, characters){
+                    let password = "";
+                    for (let i = 0; i < length; i++) {
+                        password += characters.charAt(
+                        Math.floor(Math.random() * characters.length)
+                        );
+                    }
+                    return password;
+                };
+                    // adding an event listener to the copy button that copies the password to the clipboard
+
+                    const copyBtn = document.getElementById("copy");
+                    copyBtn.addEventListener("click", () => {
+                    passwordTxt.select();
+                    document.execCommand("copy");
+                    alert("Password Has been Copied!");
+                    });
+
+                    // adding an event listener that alerts user if the length is 0
+                    
+                    generated.addEventListener("click", () =>{
+                        if (document.getElementById("length").value.length == 0){
+                            alert("Cannot create a password without a length!");
+                        }
+                    });
+
+                </script>
+            </div>
+        </body>
